@@ -40,28 +40,34 @@ async def actions(update: Update, context: CallbackContext) -> None:
     selected_product = context.user_data['product']
     subscription = context.user_data['subscription']
     order_code = datetime.now().strftime("%Y%m%d%H%M%S")
-    await query.edit_message_text(text=f'🗂️ Order Code: {order_code} \n🛍️ You selected a {selected_product} with {subscription} subscription. \n\n 🙏🏻Thank you for using our bot!')
+    await query.edit_message_text(text=f'🗂️ Order Code: {order_code} \n🛍️ You selected a {selected_product} with {subscription} subscription.')
 
     if selected_product == "AppleMusic":
         print("apple id begir----")
         await query.message.reply_text("Please enter your AppleID:")
     elif selected_product == "Spotify":
-        print("email va password begirrr----")
+        await query.message.reply_text("Please enter your Email and Password:")
     elif selected_product == "AppleOne":
-        print("apple id begir----")
+        await query.message.reply_text("Please enter your AppleID:")
     else:
-        print("nemidoonaaaam")
+        await query.message.reply_text("Please enter your accounts information:")
 
     print(context.user_data)
 
 
 
 async def handle_message(update: Update, context: CallbackContext) -> None:
-    print('--sd--------')
     answer = update.message.text
-    #context.user_data['apple_id'] = apple_id
-    print(context.user_data['product'])
-    print(answer)
+    if context.user_data['product'] == "AppleMusic":
+        print(answer)
+        print(update.message.chat)
+    elif context.user_data['product'] == "Spotify":
+        print(answer)
+    elif context.user_data['product'] == "AppleOne":
+        print(answer)
+    else:
+        print(answer)
+    await update.message.reply_text("🙏 Thank you for using our bot، \n 🛍️ The request will be sent to you soon after the service is ready.")
 
 
 
