@@ -24,13 +24,25 @@ for object_name, items in data.items():
 
 
 
+with open('links.json', 'r') as links:
+    link = json.load(links)
+
+LINKS=[]
+for object_name, items in link.items():
+    print(f"Object: {object_name}")
+    LINKS.append(object_name)
+    for item in items:
+        print(f"Item: {item}")
+
+
+
 # Define states
 CATEGORY, PRODUCT, SUBSCRIPTION = range(3)
 
 # Example data for categories, products, and subscription periods
 CATEGORIES = CATS
 PRODUCTS = data
-SUBSCRIPTIONS = ['2 month', '4 months', '6 months']
+SUBSCRIPTIONS = ['2 month', '4 month', '6 month']
 
 
 
@@ -39,11 +51,9 @@ async def actions(update: Update, context: CallbackContext) -> None:
     await query.answer()
     selected_product = context.user_data['product']
     subscription = context.user_data['subscription']
-    order_code = datetime.now().strftime("%Y%m%d%H%M%S")
-    await query.edit_message_text(text=f'🗂️ Order Code: {order_code} \n🛍️ You selected a {selected_product} with {subscription} subscription.')
+    await query.edit_message_text(text=f'You selected a {selected_product} with {subscription} subscription.')
 
     if selected_product == "AppleMusic":
-        print("apple id begir----")
         await query.message.reply_text("Please enter your AppleID:")
     elif selected_product == "Spotify":
         await query.message.reply_text("Please enter your Email and Password:")
@@ -52,23 +62,35 @@ async def actions(update: Update, context: CallbackContext) -> None:
     else:
         await query.message.reply_text("Please enter your accounts information:")
 
-    print(context.user_data)
-
-
 
 async def handle_message(update: Update, context: CallbackContext) -> None:
     answer = update.message.text
+    selected_product = context.user_data['product']
+    subscription = context.user_data['subscription']
+    order_code = datetime.now().strftime("%Y%m%d%H%M%S")
+    user = update.message.chat.username
+
+    print(answer)
+    print(update.message.chat)
+    print(context.user_data)
+
     if context.user_data['product'] == "AppleMusic":
-        print(answer)
-        print(update.message.chat)
+        service_link = link['{}'.format(context.user_data["product"])]['{}'.format(context.user_data["subscription"])]
+        await update.message.reply_text(f"🗂️ Order Code: {order_code} \n👤 User: {user} \n🛍️ You selected a {selected_product} with {subscription} subscription.\n\n🔗 Link: \n {service_link}   \n\n 🙏 Thank you for using our bot")
 
     elif context.user_data['product'] == "Spotify":
-        print(answer)
+        await update.message.reply_text(f"🗂️ Order Code: {order_code} \n👤 User: {user} \n🛍️ You selected a {selected_product} with {subscription} subscription.\n\nIt will be sent to you after the desired service is ready.   \n\n 🙏 Thank you for using our bot")
+
+
     elif context.user_data['product'] == "AppleOne":
-        print(answer)
+        service_link = link['{}'.format(context.user_data["product"])]['{}'.format(context.user_data["subscription"])]
+        await update.message.reply_text(f"🗂️ Order Code: {order_code} \n👤 User: {user} \n🛍️ You selected a {selected_product} with {subscription} subscription.\n\n🔗 Link: \n {service_link}   \n\n 🙏 Thank you for using our bot")
+
     else:
-        print(answer)
-    await update.message.reply_text("🙏 Thank you for using our bot، \n 🛍️ The request will be sent to you soon after the service is ready.")
+        await update.message.reply_text(f"🗂️ Order Code: {order_code} \n👤 User: {user} \n🛍️ You selected a {selected_product} with {subscription} subscription.\n\n 🙏 Thank you for using our bot")
+
+
+
 
 
 
