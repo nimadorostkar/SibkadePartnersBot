@@ -2,13 +2,21 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.ext import Application, CallbackQueryHandler, CommandHandler,\
     ConversationHandler, ContextTypes, MessageHandler, filters, CallbackContext
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 
 TOKEN = "7445678382:AAG3-dxleieDz_dBJh4YCeMHQeuj389gM6U"
 
 
+
+def add_months(current_date, months_to_add):
+    new_date = datetime(
+        current_date.year + (current_date.month + months_to_add - 1) // 12,
+        (current_date.month + months_to_add - 1) % 12 + 1,
+        current_date.day
+    )
+    return new_date
 
 
 with open('products.json', 'r') as file:
@@ -27,13 +35,14 @@ for object_name, items in data.items():
 with open('links.json', 'r') as links:
     link = json.load(links)
 
+''' 
 LINKS=[]
 for object_name, items in link.items():
     print(f"Object: {object_name}")
     LINKS.append(object_name)
     for item in items:
         print(f"Item: {item}")
-
+'''
 
 
 # Define states
@@ -68,29 +77,31 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
     selected_product = context.user_data['product']
     subscription = context.user_data['subscription']
     order_code = datetime.now().strftime("%Y%m%d%H%M%S")
+    email_field = answer
     user = update.message.chat.username
 
     print(answer)
-    print(update.message.chat)
-    print(context.user_data)
+    #print(update.message.chat)
+    #print(context.user_data)
 
     if context.user_data['product'] == "AppleMusic":
-        service_link = link['{}'.format(context.user_data["product"])]['{}'.format(context.user_data["subscription"])]
-        await update.message.reply_text(f"🗂️ Order Code: {order_code} \n👤 User: {user} \n🛍️ You selected a {selected_product} with {subscription} subscription.\n\n🔗 Link: \n {service_link}   \n\n 🙏 Thank you for using our bot")
+        service_link = link['{}'.format(context.user_data["product"])]['{}'.format(context.user_data["subscription"])]["link"]
+        service_code = link['{}'.format(context.user_data["product"])]['{}'.format(context.user_data["subscription"])]["code"]
+        expiration = add_months(datetime.now(), int(context.user_data['subscription'][0]))
+        await update.message.reply_text(f"🗂️ Order Code: {order_code} \n\n👤 User: {user} \n🪪AppleID: {email_field} \n🛍️ You selected a {selected_product} with {subscription} subscription.\n\n🎫Code: {service_code}  \n🔗 Link: \n {service_link} \n\n📅Expiration: {expiration.date()}   \n\n 🙏 Thank you for using our bot")
 
     elif context.user_data['product'] == "Spotify":
-        await update.message.reply_text(f"🗂️ Order Code: {order_code} \n👤 User: {user} \n🛍️ You selected a {selected_product} with {subscription} subscription.\n\nIt will be sent to you after the desired service is ready.   \n\n 🙏 Thank you for using our bot")
+        await update.message.reply_text(f"🗂️ Order Code: {order_code} \n\n👤 User: {user} \n🛍️ You selected a {selected_product} with {subscription} subscription.\n\nIt will be sent to you after the desired service is ready.   \n\n 🙏 Thank you for using our bot")
 
 
     elif context.user_data['product'] == "AppleOne":
-        service_link = link['{}'.format(context.user_data["product"])]['{}'.format(context.user_data["subscription"])]
-        await update.message.reply_text(f"🗂️ Order Code: {order_code} \n👤 User: {user} \n🛍️ You selected a {selected_product} with {subscription} subscription.\n\n🔗 Link: \n {service_link}   \n\n 🙏 Thank you for using our bot")
+        service_link = link['{}'.format(context.user_data["product"])]['{}'.format(context.user_data["subscription"])]["link"]
+        service_code = link['{}'.format(context.user_data["product"])]['{}'.format(context.user_data["subscription"])]["code"]
+        expiration = add_months(datetime.now(), int(context.user_data['subscription'][0]))
+        await update.message.reply_text(f"🗂️ Order Code: {order_code} \n\n👤 User: {user} \n🪪AppleID: {email_field} \n🛍️ You selected a {selected_product} with {subscription} subscription.\n\n🎫Code: {service_code}  \n🔗 Link: \n {service_link} \n\n📅Expiration: {expiration.date()}     \n\n 🙏 Thank you for using our bot")
 
     else:
         await update.message.reply_text(f"🗂️ Order Code: {order_code} \n👤 User: {user} \n🛍️ You selected a {selected_product} with {subscription} subscription.\n\n 🙏 Thank you for using our bot")
-
-
-
 
 
 
