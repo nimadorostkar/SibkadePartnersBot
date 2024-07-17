@@ -1,4 +1,4 @@
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update, Bot
 from telegram.ext import Application, CallbackQueryHandler, CommandHandler,\
     ConversationHandler, ContextTypes, MessageHandler, filters, CallbackContext
 import json
@@ -72,6 +72,16 @@ async def actions(update: Update, context: CallbackContext) -> None:
         await query.message.reply_text("Please enter your accounts information:")
 
 
+
+
+async def button(update: Update, context: CallbackContext) -> None:
+    query = update.callback_query
+    if query.data == "support":
+        await query.message.reply_text("You can contact with @parsakzn for SibkadePartnersBot support.")
+        #await context.bot.send_message(chat_id='5554989830', text="SibkadePartners Bot Support...")
+    print("000000")
+
+
 async def handle_message(update: Update, context: CallbackContext) -> None:
     answer = update.message.text
     selected_product = context.user_data['product']
@@ -88,7 +98,10 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
         service_link = link['{}'.format(context.user_data["product"])]['{}'.format(context.user_data["subscription"])]["link"]
         service_code = link['{}'.format(context.user_data["product"])]['{}'.format(context.user_data["subscription"])]["code"]
         expiration = add_months(datetime.now(), int(context.user_data['subscription'][0]))
-        await update.message.reply_text(f"🗂️ Order Code: {order_code} \n\n👤 User: {user} \n🪪AppleID: {email_field} \n🛍️ You selected a {selected_product} with {subscription} subscription.\n\n🎫Code: {service_code}  \n🔗 Link: \n {service_link} \n\n📅Expiration: {expiration.date()}   \n\n 🙏 Thank you for using our bot")
+
+        bttn = InlineKeyboardButton("Contact support", callback_data='support')
+        markupp = InlineKeyboardMarkup([[bttn]])
+        await update.message.reply_text(f"🗂️ Order Code: {order_code} \n\n👤 User: {user} \n🪪AppleID: {email_field} \n🛍️ You selected a {selected_product} with {subscription} subscription.\n\n🎫Code: {service_code}  \n🔗 Link: \n {service_link} \n\n📅Expiration: {expiration.date()}   \n\n 🙏 Thank you for using our bot",reply_markup=markupp)
 
     elif context.user_data['product'] == "Spotify":
         await update.message.reply_text(f"🗂️ Order Code: {order_code} \n\n👤 User: {user} \n🛍️ You selected a {selected_product} with {subscription} subscription.\n\nIt will be sent to you after the desired service is ready.   \n\n 🙏 Thank you for using our bot")
@@ -160,6 +173,10 @@ def main() -> None:
     )
 
     application.add_handler(conv_handler)
+
+
+    button_handler = CallbackQueryHandler(button)
+    application.add_handler(button_handler)
 
     message_handler = MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message)
     application.add_handler(message_handler)
