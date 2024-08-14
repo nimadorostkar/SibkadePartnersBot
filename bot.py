@@ -9,7 +9,6 @@ from datetime import datetime, timedelta
 TOKEN = "7445678382:AAG3-dxleieDz_dBJh4YCeMHQeuj389gM6U"
 
 
-
 def add_months(current_date, months_to_add):
     new_date = datetime(
         current_date.year + (current_date.month + months_to_add - 1) // 12,
@@ -102,20 +101,33 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
         bttn = InlineKeyboardButton("Contact support", callback_data='support')
         markupp = InlineKeyboardMarkup([[bttn]])
         await update.message.reply_text(f"🗂️ Order Code: {order_code} \n\n👤 User: {user} \n🪪AppleID: {email_field} \n🛍️ You selected a {selected_product} with {subscription} subscription.\n\n🎫Code: {service_code}  \n🔗 Link: \n {service_link} \n\n📅Expiration: {expiration.date()}   \n\n 🙏 Thank you for using our bot",reply_markup=markupp)
+        with open('orders.json', 'a') as file:
+            orderrr = {"order_code":order_code,"user":user,"chat_id":update.message.chat.id,"expiration":str(expiration.date())}
+            json.dump(orderrr, file)
+
 
     elif context.user_data['product'] == "Spotify":
         await update.message.reply_text(f"🗂️ Order Code: {order_code} \n\n👤 User: {user} \n🛍️ You selected a {selected_product} with {subscription} subscription.\n\nIt will be sent to you after the desired service is ready.   \n\n 🙏 Thank you for using our bot")
-
+        expiration = add_months(datetime.now(), int(context.user_data['subscription'][0]))
+        with open('orders.json', 'a') as file:
+            orderrr = {"order_code": order_code, "user": user, "chat_id": update.message.chat.id,"expiration": str(expiration.date())}
+            json.dump(orderrr, file)
 
     elif context.user_data['product'] == "AppleOne":
         service_link = link['{}'.format(context.user_data["product"])]['{}'.format(context.user_data["subscription"])]["link"]
         service_code = link['{}'.format(context.user_data["product"])]['{}'.format(context.user_data["subscription"])]["code"]
         expiration = add_months(datetime.now(), int(context.user_data['subscription'][0]))
         await update.message.reply_text(f"🗂️ Order Code: {order_code} \n\n👤 User: {user} \n🪪AppleID: {email_field} \n🛍️ You selected a {selected_product} with {subscription} subscription.\n\n🎫Code: {service_code}  \n🔗 Link: \n {service_link} \n\n📅Expiration: {expiration.date()}     \n\n 🙏 Thank you for using our bot")
+        with open('orders.json', 'a') as file:
+            orderrr = {"order_code": order_code, "user": user, "chat_id": update.message.chat.id,"expiration": str(expiration.date())}
+            json.dump(orderrr, file)
 
     else:
         await update.message.reply_text(f"🗂️ Order Code: {order_code} \n👤 User: {user} \n🛍️ You selected a {selected_product} with {subscription} subscription.\n\n 🙏 Thank you for using our bot")
-
+        expiration = add_months(datetime.now(), int(context.user_data['subscription'][0]))
+        with open('orders.json', 'a') as file:
+            orderrr = {"order_code": order_code, "user": user, "chat_id": update.message.chat.id,"expiration": str(expiration.date())}
+            json.dump(orderrr, file)
 
 
 # Start command handler
@@ -173,15 +185,10 @@ def main() -> None:
     )
 
     application.add_handler(conv_handler)
-
-
     button_handler = CallbackQueryHandler(button)
     application.add_handler(button_handler)
-
     message_handler = MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message)
     application.add_handler(message_handler)
-
-    # Run the bot
     application.run_polling()
 
 if __name__ == '__main__':
