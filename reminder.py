@@ -1,24 +1,15 @@
-import datetime
+from datetime import datetime, date, timedelta
 import json
 
 
+with open('orders.json') as json_file:
+    json_data = json_file.read()
+python_obj = json.loads(json_data)
 
-data = []
-with open('orders.json', 'r') as file:
-    for line in file:
-        data.append(line.strip())
-
-
-
-for item in data:
-    print('---------')
-    print(item)
-    print(json.loads(item))
-
-
-    expiration_date = item['expiration']
-    reminder_date = expiration_date - datetime.timedelta(days=3)
-
-    # Compare with the current date
-    if datetime.date.today() >= reminder_date:
+for item in python_obj:
+    expiration_date = datetime.strptime(item['expiration'], "%Y-%m-%d")
+    reminder_date = expiration_date - timedelta(days=3)
+    today = datetime.combine(date.today(), datetime.min.time())
+    if today >= reminder_date:
         print(f"Send reminder for order {item['order_code']} (Chat ID: {item['chat_id']})")
+        context.bot.send_message(chat_id=item['chat_id'], text=f"your service expiration is {item['expiration']}")

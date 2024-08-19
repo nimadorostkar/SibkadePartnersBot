@@ -2,10 +2,34 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update, Bot
 from telegram.ext import Application, CallbackQueryHandler, CommandHandler,\
     ConversationHandler, ContextTypes, MessageHandler, filters, CallbackContext
 import json
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
+import time
 
 
 TOKEN = "7445678382:AAG3-dxleieDz_dBJh4YCeMHQeuj389gM6U"
+
+
+
+async def reminderrr(update: Update, context: CallbackContext) -> None:
+    with open('orders.json') as json_file:
+        json_data = json_file.read()
+    python_obj = json.loads(json_data)
+
+    for item in python_obj:
+        expiration_date = datetime.strptime(item['expiration'], "%Y-%m-%d")
+        reminder_date = expiration_date - timedelta(days=3)
+        today = datetime.combine(date.today(), datetime.min.time())
+        if today >= reminder_date:
+            #print(f"Send reminder for order {item['order_code']} (Chat ID: {item['chat_id']})")
+            await context.bot.send_message(chat_id=item['chat_id'], text=f"3 days until the end of your service. \norder_code: {item['order_code']} \nyour service expiration is {item['expiration']}")
+
+
+
+while True:
+    await reminderrr(update, context)
+    # Sleep for 24 hours (86400 seconds)
+    time.sleep(86400)
+
 
 
 def add_months(current_date, months_to_add):
@@ -96,40 +120,53 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
         service_link = link['{}'.format(context.user_data["product"])]['{}'.format(context.user_data["subscription"])]["link"]
         service_code = link['{}'.format(context.user_data["product"])]['{}'.format(context.user_data["subscription"])]["code"]
         expiration = add_months(datetime.now(), int(context.user_data['subscription'][0]))
-
+        await reminderrr(update, context)
         bttn = InlineKeyboardButton("Contact support", callback_data='support')
         markupp = InlineKeyboardMarkup([[bttn]])
         await update.message.reply_text(f"🗂️ Order Code: {order_code} \n\n👤 User: {user} \n🪪AppleID: {email_field} \n🛍️ You selected a {selected_product} with {subscription} subscription.\n\n🎫Code: {service_code}  \n🔗 Link: \n {service_link} \n\n📅Expiration: {expiration.date()}   \n\n 🙏 Thank you for using our bot",reply_markup=markupp)
-        with open('orders.json', 'a') as file:
+
+        with open('orders.json') as f:
+            data = json.load(f)
             orderrr = {"order_code":order_code,"user":user,"chat_id":update.message.chat.id,"expiration":str(expiration.date())}
-            json.dump(orderrr, file)
+            data.append(orderrr)
+        with open('orders.json', 'w') as file:
+            json.dump(data, file)
 
 
     elif context.user_data['product'] == "Spotify":
         await update.message.reply_text(f"🗂️ Order Code: {order_code} \n\n👤 User: {user} \n🛍️ You selected a {selected_product} with {subscription} subscription.\n\nIt will be sent to you after the desired service is ready.   \n\n 🙏 Thank you for using our bot")
         expiration = add_months(datetime.now(), int(context.user_data['subscription'][0]))
-        with open('orders.json', 'a') as file:
+        with open('orders.json') as f:
+            data = json.load(f)
             orderrr = {"order_code": order_code, "user": user, "chat_id": update.message.chat.id,"expiration": str(expiration.date())}
-            json.dump(orderrr, file)
+            data.append(orderrr)
+        with open('orders.json', 'w') as file:
+            json.dump(data, file)
 
     elif context.user_data['product'] == "AppleOne":
         service_link = link['{}'.format(context.user_data["product"])]['{}'.format(context.user_data["subscription"])]["link"]
         service_code = link['{}'.format(context.user_data["product"])]['{}'.format(context.user_data["subscription"])]["code"]
         expiration = add_months(datetime.now(), int(context.user_data['subscription'][0]))
         await update.message.reply_text(f"🗂️ Order Code: {order_code} \n\n👤 User: {user} \n🪪AppleID: {email_field} \n🛍️ You selected a {selected_product} with {subscription} subscription.\n\n🎫Code: {service_code}  \n🔗 Link: \n {service_link} \n\n📅Expiration: {expiration.date()}     \n\n 🙏 Thank you for using our bot")
-        with open('orders.json', 'a') as file:
+        with open('orders.json') as f:
+            data = json.load(f)
             orderrr = {"order_code": order_code, "user": user, "chat_id": update.message.chat.id,"expiration": str(expiration.date())}
-            json.dump(orderrr, file)
+            data.append(orderrr)
+        with open('orders.json', 'w') as file:
+            json.dump(data, file)
 
     else:
         await update.message.reply_text(f"🗂️ Order Code: {order_code} \n👤 User: {user} \n🛍️ You selected a {selected_product} with {subscription} subscription.\n\n 🙏 Thank you for using our bot")
         expiration = add_months(datetime.now(), int(context.user_data['subscription'][0]))
-        with open('orders.json', 'a') as file:
+        with open('orders.json') as f:
+            data = json.load(f)
             orderrr = {"order_code": order_code, "user": user, "chat_id": update.message.chat.id,"expiration": str(expiration.date())}
-            json.dump(orderrr, file)
+            data.append(orderrr)
+        with open('orders.json', 'w') as file:
+            json.dump(data, file)
 
 
-# Start command handler
+
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     keyboard = [[InlineKeyboardButton(category, callback_data=category)] for category in CATEGORIES]
     reply_markup = InlineKeyboardMarkup(keyboard)
