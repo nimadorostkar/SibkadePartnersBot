@@ -113,7 +113,6 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
             with open('orders.json', 'w') as file:
                 json.dump(data, file)
 
-
         elif selected_product == "Spotify" or selected_product == "spotify":
             await update.message.reply_text(
                 f"🗂️ Order Code: {order_code} \n\n👤 User: {user} \n🛍️ You selected a {selected_product} with {subscription} subscription.\n\nIt will be sent to you after the desired service is ready.   \n\n 🙏 Thank you for using our bot")
