@@ -10,5 +10,4 @@ COPY . /app
 RUN pip install -r requirements.txt
 
 # Specify the command to run your Python script
-CMD ["python", "bot.py"]
-CMD ["python", "reminder.py"]
+CMD ["python", "bot.py", "reminder.py"]
