@@ -83,7 +83,7 @@ async def button(update: Update, context: CallbackContext) -> None:
 
 async def handle_message(update: Update, context: CallbackContext) -> None:
     first_line = update.message.text.splitlines()[0].lower()
-    if first_line == 'hey bot':
+    if first_line.lower() == 'hey sibkade':
         answer = update.message.text.splitlines()[1].lower()
         orders = answer.split(",")
         selected_product, subscription, email_field = orders
@@ -104,53 +104,42 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
             bttn = InlineKeyboardButton("Contact support", callback_data='support')
             markupp = InlineKeyboardMarkup([[bttn]])
             await update.message.reply_text(f"🗂️ Order Code: {order_code} \n\n👤 User: {user} \n🪪AppleID: {email_field} \n🛍️ You selected a AppleMusic with {subs} subscription.\n\n🎫Code: {service_code}  \n🔗 Link: \n {service_link} \n\n📅Expiration: {expiration.date()}   \n\n 🙏 Thank you for using our bot",reply_markup=markupp)
-
             with open('orders.json') as f:
                 data = json.load(f)
-                orderrr = {"order_code": order_code, "user": user, "chat_id": update.message.chat.id,
-                           "message_id": update.message.id + 1, "expiration": str(expiration.date())}
+                orderrr = {"order_code": order_code, "user": user, "chat_id": update.message.chat.id,"message_id": update.message.id + 1, "expiration": str(expiration.date())}
                 data.append(orderrr)
             with open('orders.json', 'w') as file:
                 json.dump(data, file)
 
         elif selected_product == "Spotify" or selected_product == "spotify":
-            await update.message.reply_text(
-                f"🗂️ Order Code: {order_code} \n\n👤 User: {user} \n🛍️ You selected a {selected_product} with {subscription} subscription.\n\nIt will be sent to you after the desired service is ready.   \n\n 🙏 Thank you for using our bot")
-            expiration = add_months(datetime.now(), int(context.user_data['subscription'][0]))
+            await update.message.reply_text(f"🗂️ Order Code: {order_code} \n\n👤 User: {user} \n🛍️ You selected a Spotify with {subs} subscription.\n\nIt will be sent to you after the desired service is ready.   \n\n 🙏 Thank you for using our bot")
+            expiration = add_months(datetime.now(), int(subs[0]))
             with open('orders.json') as f:
                 data = json.load(f)
-                orderrr = {"order_code": order_code, "user": user, "chat_id": update.message.chat.id,
-                           "message_id": update.message.id + 1, "expiration": str(expiration.date())}
+                orderrr = {"order_code": order_code, "user": user, "chat_id": update.message.chat.id,"message_id": update.message.id + 1, "expiration": str(expiration.date())}
                 data.append(orderrr)
             with open('orders.json', 'w') as file:
                 json.dump(data, file)
 
         elif selected_product == "AppleOne" or selected_product == "appleone":
-            service_link = \
-                link['{}'.format(context.user_data["product"])]['{}'.format(context.user_data["subscription"])][
-                    "link"]
-            service_code = \
-                link['{}'.format(context.user_data["product"])]['{}'.format(context.user_data["subscription"])][
-                    "code"]
-            expiration = add_months(datetime.now(), int(context.user_data['subscription'][0]))
-            await update.message.reply_text(
-                f"🗂️ Order Code: {order_code} \n\n👤 User: {user} \n🪪AppleID: {email_field} \n🛍️ You selected a {selected_product} with {subscription} subscription.\n\n🎫Code: {service_code}  \n🔗 Link: \n {service_link} \n\n📅Expiration: {expiration.date()}     \n\n 🙏 Thank you for using our bot")
+            service_link = link["AppleOne"][subs]["link"]
+            service_code = link["AppleMusic"][subs]["code"]
+            expiration = add_months(datetime.now(), int(subs[0]))
+            await update.message.reply_text(f"🗂️ Order Code: {order_code} \n\n👤 User: {user} \n🪪AppleID: {email_field} \n🛍️ You selected a AppleOne with {subs} subscription.\n\n🎫Code: {service_code}  \n🔗 Link: \n {service_link} \n\n📅Expiration: {expiration.date()}     \n\n 🙏 Thank you for using our bot")
             with open('orders.json') as f:
                 data = json.load(f)
-                orderrr = {"order_code": order_code, "user": user, "chat_id": update.message.chat.id,
-                           "message_id": update.message.id + 1, "expiration": str(expiration.date())}
+                orderrr = {"order_code": order_code, "user": user, "chat_id": update.message.chat.id,"message_id": update.message.id + 1, "expiration": str(expiration.date())}
                 data.append(orderrr)
             with open('orders.json', 'w') as file:
                 json.dump(data, file)
 
         else:
             await update.message.reply_text(
-                f"🗂️ Order Code: {order_code} \n👤 User: {user} \n🛍️ You selected a {selected_product} with {subscription} subscription.\n\n 🙏 Thank you for using our bot")
-            expiration = add_months(datetime.now(), int(context.user_data['subscription'][0]))
+                f"🗂️ Order Code: {order_code} \n👤 User: {user} \n🛍️ You selected a {selected_product} with {subs} subscription.\n\n 🙏 Thank you for using our bot")
+            expiration = add_months(datetime.now(), int(subs[0]))
             with open('orders.json') as f:
                 data = json.load(f)
-                orderrr = {"order_code": order_code, "user": user, "chat_id": update.message.chat.id,
-                           "message_id": update.message.id + 1, "expiration": str(expiration.date())}
+                orderrr = {"order_code": order_code, "user": user, "chat_id": update.message.chat.id,"message_id": update.message.id + 1, "expiration": str(expiration.date())}
                 data.append(orderrr)
             with open('orders.json', 'w') as file:
                 json.dump(data, file)
