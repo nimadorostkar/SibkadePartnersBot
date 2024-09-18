@@ -19,6 +19,10 @@ ALLOWED_HOSTS = ['localhost','127.0.0.1','0.0.0.0','23.88.54.241']
 # Application definition
 
 INSTALLED_APPS = [
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
     'link',
     'order',
     'django.contrib.admin',
@@ -38,6 +42,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'panel.urls'
@@ -98,6 +103,11 @@ REST_FRAMEWORK = {
         'allauth.account.auth_backends.AuthenticationBackend',
     )
 }
+
+
+SITE_ID = 1
+
+
 
 
 # Internationalization
