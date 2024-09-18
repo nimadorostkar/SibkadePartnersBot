@@ -20,6 +20,7 @@ ALLOWED_HOSTS = ['localhost','127.0.0.1','0.0.0.0','23.88.54.241']
 
 INSTALLED_APPS = [
     'link',
+    'order',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

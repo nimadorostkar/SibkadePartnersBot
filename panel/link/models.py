@@ -15,6 +15,8 @@ class Link(models.Model):
     code = models.CharField(max_length=255)
     link = models.TextField(max_length=2000)
     is_active = models.BooleanField(default=True)
+    usable_times = models.IntegerField()
+    used_times = models.IntegerField(default=0)
     create_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

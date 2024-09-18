@@ -14,3 +14,4 @@ requests
 whitenoise
 django-filter
 urllib3
+django-filter
