@@ -44,14 +44,10 @@ for object_name, items in data.items():
         print(f"Item: {item}")
 
 
-print('----&--')
-
-json_data = read_json_from_api_link("http://23.88.54.241:8000/links")
-print(json_data)
-
 
 #with open('links.json', 'r') as links:
     #link = json.load(links)
+link = read_json_from_api_link("http://23.88.54.241:8000/links")
 
 
 # Define states
