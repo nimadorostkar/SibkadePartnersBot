@@ -8,7 +8,6 @@ from datetime import datetime, timedelta, date
 TOKEN = "7445678382:AAG3-dxleieDz_dBJh4YCeMHQeuj389gM6U"
 
 
-
 def add_months(current_date, months_to_add):
     new_date = datetime(
         current_date.year + (current_date.month + months_to_add - 1) // 12,
