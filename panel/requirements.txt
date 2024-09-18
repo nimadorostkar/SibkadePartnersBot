@@ -1,6 +1,3 @@
-python-telegram-bot==21.3
-telebot
-schedule
 Django==4.1.4
 djangorestframework==3.14.0
 djangorestframework-simplejwt
@@ -13,6 +10,7 @@ django-cors-headers==3.13.0
 uvloop==0.17.0
 httptools==0.5.0
 coverage==6.4.4
-requests==2.28.1
+requests
 whitenoise
 django-filter
+urllib3
