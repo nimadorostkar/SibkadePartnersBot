@@ -3,9 +3,25 @@ from telegram.ext import Application, CallbackQueryHandler, CommandHandler,\
     ConversationHandler, ContextTypes, MessageHandler, filters, CallbackContext
 import json
 from datetime import datetime, timedelta, date
-
+import requests
+import json
 
 TOKEN = "7445678382:AAG3-dxleieDz_dBJh4YCeMHQeuj389gM6U"
+
+
+
+def read_json_from_api_link(api_link):
+    try:
+        proxies = {'http': 'http://23.88.54.241:8000', 'https': 'https://23.88.54.241:8000'}
+        response = requests.get(api_link,proxies=proxies)
+        response.raise_for_status()
+        data = response.json()
+        return data
+    except requests.exceptions.RequestException as e:
+        print(f"Error making API request: {e}")
+    except json.JSONDecodeError as e:
+        print(f"Error decoding JSON data: {e}")
+
 
 
 def add_months(current_date, months_to_add):
@@ -28,19 +44,14 @@ for object_name, items in data.items():
         print(f"Item: {item}")
 
 
+print('----&--')
+
+json_data = read_json_from_api_link("http://23.88.54.241:8000/links")
+print(json_data)
 
 
-with open('links.json', 'r') as links:
-    link = json.load(links)
-
-''' 
-LINKS=[]
-for object_name, items in link.items():
-    print(f"Object: {object_name}")
-    LINKS.append(object_name)
-    for item in items:
-        print(f"Item: {item}")
-'''
+#with open('links.json', 'r') as links:
+    #link = json.load(links)
 
 
 # Define states
