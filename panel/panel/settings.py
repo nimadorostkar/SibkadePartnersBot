@@ -150,11 +150,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 
-CORS_REPLACE_HTTPS_REFERER = True
-CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOWED_ORIGINS = ["http://localhost","http://127.0.0.1",'http://23.88.54.241:8000']
+#CORS_REPLACE_HTTPS_REFERER = True
+#CORS_ALLOW_CREDENTIALS = True
+#CORS_ALLOWED_ORIGINS = ["http://localhost","http://127.0.0.1",'http://23.88.54.241:8000']
 CSRF_TRUSTED_ORIGINS = ["http://localhost","http://127.0.0.1",'http://23.88.54.241:8000']
-CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_WHITELIST = ["http://localhost","http://127.0.0.1",'http://23.88.54.241:8000']
+#CORS_ORIGIN_ALLOW_ALL = True
 SESSION_COOKIE_SECURE=False
 CSRF_COOKIE_SECURE = False
-CORS_ORIGIN_WHITELIST = ["http://localhost","http://127.0.0.1",'http://23.88.54.241']
