@@ -20,4 +20,4 @@ class Link(models.Model):
     create_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return str(self.type) +" "+ str(self.duration)
+        return str(self.type) +" "+ str(self.duration) +" | Id: "+ str(self.id)

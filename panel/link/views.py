@@ -43,9 +43,9 @@ class LinkSearchView(GenericAPIView):
     serializer_class = LinkSerializer
     queryset = Link.objects.all()
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    search_fields = ['name']
-    ordering_fields = ['id']
-    filterset_fields = ['category', 'id']
+    search_fields = ['code','type','duration','link']
+    ordering_fields = ['id','duration','code','type']
+    filterset_fields = ['duration', 'is_active','code','type','create_at']
 
     def get(self, request, format=None):
         query = self.filter_queryset(Link.objects.all())
