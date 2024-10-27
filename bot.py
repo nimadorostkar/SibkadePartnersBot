@@ -33,8 +33,8 @@ def add_months(current_date, months_to_add):
     return new_date
 
 
-with open('products.json', 'r') as file:
-    data = json.load(file)
+#with open('products.json', 'r') as file:
+    #data = json.load(file)
 
 CATS=[]
 for object_name, items in data.items():
@@ -47,6 +47,7 @@ for object_name, items in data.items():
 
 #with open('links.json', 'r') as links:
     #link = json.load(links)
+
 link = read_json_from_api_link("http://23.88.54.241:8000/links")
 
 
