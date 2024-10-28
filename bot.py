@@ -168,6 +168,7 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
                 bttn = InlineKeyboardButton("Contact support", callback_data='support')
                 markupp = InlineKeyboardMarkup([[bttn]])
                 await update.message.reply_text(f"🗂️ Order Code: {order_code} \n\n👤 User: {user} \n🪪AppleID: {email_field} \n🛍️ You selected a {selected_product} with {subscription} subscription.\n\n🎫Code: {link_item['code']}  \n🔗 Link: \n {link_item['link']} \n\n📅Expiration: {expiration.date()}   \n\n 🙏 Thank you for using our bot",reply_markup=markupp)
+                # link_item['id']
             else:
                 bttn = InlineKeyboardButton("Contact support", callback_data='support')
                 markupp = InlineKeyboardMarkup([[bttn]])

@@ -38,6 +38,21 @@ class LinkItemView(APIView):
             return Response("Something went wrong, try again", status=status.HTTP_400_BAD_REQUEST)
 
 
+
+class LinkItemAddUsageView(APIView):
+    permission_classes = [AllowAny]
+    def get(self, *args, **kwargs):
+        try:
+            link = Link.objects.get(code=self.kwargs["code"])
+            link.used_times += 1
+            if link.used_times >= link.usable_times:
+                link.is_active = False
+            link.save()
+            return Response("done", status=status.HTTP_200_OK)
+        except:
+            return Response("Something went wrong, try again", status=status.HTTP_400_BAD_REQUEST)
+
+
 class LinkSearchView(GenericAPIView):
     permission_classes = [AllowAny]
     serializer_class = LinkSerializer
