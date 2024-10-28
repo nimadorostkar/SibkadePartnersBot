@@ -112,12 +112,6 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
                 link_item = links_data[-1]
                 expiration = add_months(datetime.now(), int(subs[0]))
                 requests.get(f"http://23.88.54.241:8000/link-add-usage/{link_item['id']}")
-
-                print('-----1-')
-                print(update.message.chat_id)
-                print('---')
-                print(update.message.message_id)
-
                 post_data = {
                     'order_code': order_code,
                     'link': link_item['id'],
@@ -125,11 +119,9 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
                     'chat_id': update.message.chat_id,
                     'message_id': update.message.message_id,
                     'expiration': expiration.date(),
-                    'input': answer
+                    'input': update.message.text
                 }
                 requests.post('http://23.88.54.241:8000/add-order/', data=post_data)
-
-
                 bttn = InlineKeyboardButton("Contact support", callback_data='support')
                 markupp = InlineKeyboardMarkup([[bttn]])
                 await update.message.reply_text(
@@ -143,6 +135,14 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
 
 
         elif selected_product == "Spotify" or selected_product == "spotify":
+            post_data = {
+                'order_code': order_code,
+                'user': user,
+                'chat_id': update.message.chat_id,
+                'message_id': update.message.message_id,
+                'input': update.message.text
+            }
+            requests.post('http://23.88.54.241:8000/add-order/', data=post_data)
             await update.message.reply_text(
                 f"🗂️ Order Code: {order_code} \n\n👤 User: {user} \n🛍️ You selected a Spotify with {subs} subscription.\n\nIt will be sent to you after the desired service is ready.   \n\n 🙏 Thank you for using our bot")
 
@@ -155,6 +155,16 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
                 link_item = links_data[-1]
                 expiration = add_months(datetime.now(), int(subs[0]))
                 requests.get(f"http://23.88.54.241:8000/link-add-usage/{link_item['id']}")
+                post_data = {
+                    'order_code': order_code,
+                    'link': link_item['id'],
+                    'user': user,
+                    'chat_id': update.message.chat_id,
+                    'message_id': update.message.message_id,
+                    'expiration': expiration.date(),
+                    'input': update.message.text
+                }
+                requests.post('http://23.88.54.241:8000/add-order/', data=post_data)
                 bttn = InlineKeyboardButton("Contact support", callback_data='support')
                 markupp = InlineKeyboardMarkup([[bttn]])
                 await update.message.reply_text(
@@ -186,6 +196,16 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
                 link_item = links_data[-1]
                 expiration = add_months(datetime.now(), int(subscription[0]))
                 requests.get(f"http://23.88.54.241:8000/link-add-usage/{link_item['id']}")
+                post_data = {
+                    'order_code': order_code,
+                    'link': link_item['id'],
+                    'user': user,
+                    'chat_id': update.message.chat_id,
+                    'message_id': update.message.message_id,
+                    'expiration': expiration.date(),
+                    'input': answer
+                }
+                requests.post('http://23.88.54.241:8000/add-order/', data=post_data)
                 bttn = InlineKeyboardButton("Contact support", callback_data='support')
                 markupp = InlineKeyboardMarkup([[bttn]])
                 await update.message.reply_text(f"🗂️ Order Code: {order_code} \n\n👤 User: {user} \n🪪AppleID: {email_field} \n🛍️ You selected a {selected_product} with {subscription} subscription.\n\n🎫Code: {link_item['code']}  \n🔗 Link: \n {link_item['link']} \n\n📅Expiration: {expiration.date()}   \n\n 🙏 Thank you for using our bot",reply_markup=markupp)
@@ -196,6 +216,14 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
 
 
         elif context.user_data['product'] == "Spotify":
+            post_data = {
+                'order_code': order_code,
+                'user': user,
+                'chat_id': update.message.chat_id,
+                'message_id': update.message.message_id,
+                'input': answer
+            }
+            requests.post('http://23.88.54.241:8000/add-order/', data=post_data)
             await update.message.reply_text(
                 f"🗂️ Order Code: {order_code} \n\n👤 User: {user} \n🛍️ You selected a {selected_product} with {subscription} subscription.\n\nIt will be sent to you after the desired service is ready.   \n\n 🙏 Thank you for using our bot")
 
@@ -207,6 +235,16 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
                 link_item = links_data[-1]
                 expiration = add_months(datetime.now(), int(subscription[0]))
                 requests.get(f"http://23.88.54.241:8000/link-add-usage/{link_item['id']}")
+                post_data = {
+                    'order_code': order_code,
+                    'link': link_item['id'],
+                    'user': user,
+                    'chat_id': update.message.chat_id,
+                    'message_id': update.message.message_id,
+                    'expiration': expiration.date(),
+                    'input': answer
+                }
+                requests.post('http://23.88.54.241:8000/add-order/', data=post_data)
                 bttn = InlineKeyboardButton("Contact support", callback_data='support')
                 markupp = InlineKeyboardMarkup([[bttn]])
                 await update.message.reply_text(

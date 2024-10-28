@@ -16,3 +16,4 @@ django-filter
 urllib3
 django-filter
 django-allauth
+django-q==1.3.9

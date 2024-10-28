@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'gunicorn',
     'whitenoise',
+    'django_q',
 ]
 
 MIDDLEWARE = [
@@ -121,6 +122,16 @@ AUTHENTICATION_BACKENDS = [
 SITE_ID = 1
 
 
+Q_CLUSTER = {
+    'name': 'DjangoQ',
+    'workers': 4,
+    'recycle': 500,
+    'timeout': 60,
+    'retry': 60,
+    'queue_limit': 50,
+    'bulk': 10,
+    'orm': 'default'
+}
 
 
 # Internationalization

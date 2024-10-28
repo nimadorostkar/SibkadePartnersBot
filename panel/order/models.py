@@ -6,6 +6,7 @@ class Order(models.Model):
         ("New", "New"),
         ("Done", "Done"),
         ("In-process", "In-process"),
+        ("Expired", "Expired"),
         ("Cancelled", "Cancelled"),)
 
     status = models.CharField(max_length=15, default="New", choices=status_choices)
