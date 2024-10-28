@@ -33,8 +33,8 @@ def add_months(current_date, months_to_add):
     return new_date
 
 
-#with open('products.json', 'r') as file:
-    #data = json.load(file)
+with open('products.json', 'r') as file:
+    data = json.load(file)
 
 CATS=[]
 for object_name, items in data.items():
@@ -85,7 +85,7 @@ async def button(update: Update, context: CallbackContext) -> None:
     if query.data == "support":
         await query.message.reply_text("You can contact with @parsakzn for SibkadePartnersBot support.")
         #await context.bot.send_message(chat_id='5554989830', text="SibkadePartners Bot Support...")
-    print("000000")
+
 
 
 async def handle_message(update: Update, context: CallbackContext) -> None:
@@ -105,51 +105,46 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
             subs = "6 month"
 
         if selected_product == "AppleMusic" or selected_product == "applemusic":
-            service_link = link["AppleMusic"][subs]["link"]
-            service_code = link["AppleMusic"][subs]["code"]
-            expiration = add_months(datetime.now(), int(subs[0]))
-            bttn = InlineKeyboardButton("Contact support", callback_data='support')
-            markupp = InlineKeyboardMarkup([[bttn]])
-            await update.message.reply_text(f"🗂️ Order Code: {order_code} \n\n👤 User: {user} \n🪪AppleID: {email_field} \n🛍️ You selected a AppleMusic with {subs} subscription.\n\n🎫Code: {service_code}  \n🔗 Link: \n {service_link} \n\n📅Expiration: {expiration.date()}   \n\n 🙏 Thank you for using our bot",reply_markup=markupp)
-            with open('orders.json') as f:
-                data = json.load(f)
-                orderrr = {"order_code": order_code, "user": user, "chat_id": update.message.chat.id,"message_id": update.message.id + 1, "expiration": str(expiration.date())}
-                data.append(orderrr)
-            with open('orders.json', 'w') as file:
-                json.dump(data, file)
+            links_response = requests.get(
+                f"http://23.88.54.241:8000/link-search?duration={subscription}&is_active=true&type={selected_product}")
+            links_data = links_response.json()
+            if links_data:
+                link_item = links_data[-1]
+                expiration = add_months(datetime.now(), int(subs[0]))
+                bttn = InlineKeyboardButton("Contact support", callback_data='support')
+                markupp = InlineKeyboardMarkup([[bttn]])
+                await update.message.reply_text(
+                    f"🗂️ Order Code: {order_code} \n\n👤 User: {user} \n🪪AppleID: {email_field} \n🛍️ You selected a {selected_product} with {subscription} subscription.\n\n🎫Code: {link_item['code']}  \n🔗 Link: \n {link_item['link']} \n\n📅Expiration: {expiration.date()}   \n\n 🙏 Thank you for using our bot",
+                    reply_markup=markupp)
+            else:
+                bttn = InlineKeyboardButton("Contact support", callback_data='support')
+                markupp = InlineKeyboardMarkup([[bttn]])
+                await update.message.reply_text("Not active link found for AppleMusic.", reply_markup=markupp)
+
+
 
         elif selected_product == "Spotify" or selected_product == "spotify":
-            await update.message.reply_text(f"🗂️ Order Code: {order_code} \n\n👤 User: {user} \n🛍️ You selected a Spotify with {subs} subscription.\n\nIt will be sent to you after the desired service is ready.   \n\n 🙏 Thank you for using our bot")
-            expiration = add_months(datetime.now(), int(subs[0]))
-            with open('orders.json') as f:
-                data = json.load(f)
-                orderrr = {"order_code": order_code, "user": user, "chat_id": update.message.chat.id,"message_id": update.message.id + 1, "expiration": str(expiration.date())}
-                data.append(orderrr)
-            with open('orders.json', 'w') as file:
-                json.dump(data, file)
+            await update.message.reply_text(
+                f"🗂️ Order Code: {order_code} \n\n👤 User: {user} \n🛍️ You selected a {selected_product} with {subscription} subscription.\n\nIt will be sent to you after the desired service is ready.   \n\n 🙏 Thank you for using our bot")
+
 
         elif selected_product == "AppleOne" or selected_product == "appleone":
-            service_link = link["AppleOne"][subs]["link"]
-            service_code = link["AppleMusic"][subs]["code"]
-            expiration = add_months(datetime.now(), int(subs[0]))
-            await update.message.reply_text(f"🗂️ Order Code: {order_code} \n\n👤 User: {user} \n🪪AppleID: {email_field} \n🛍️ You selected a AppleOne with {subs} subscription.\n\n🎫Code: {service_code}  \n🔗 Link: \n {service_link} \n\n📅Expiration: {expiration.date()}     \n\n 🙏 Thank you for using our bot")
-            with open('orders.json') as f:
-                data = json.load(f)
-                orderrr = {"order_code": order_code, "user": user, "chat_id": update.message.chat.id,"message_id": update.message.id + 1, "expiration": str(expiration.date())}
-                data.append(orderrr)
-            with open('orders.json', 'w') as file:
-                json.dump(data, file)
+            links_response = requests.get(
+                f"http://23.88.54.241:8000/link-search?duration={subscription}&is_active=true&type={selected_product}")
+            links_data = links_response.json()
+            if links_data:
+                link_item = links_data[-1]
+                expiration = add_months(datetime.now(), int(subs[0]))
+                bttn = InlineKeyboardButton("Contact support", callback_data='support')
+                markupp = InlineKeyboardMarkup([[bttn]])
+                await update.message.reply_text(
+                    f"🗂️ Order Code: {order_code} \n\n👤 User: {user} \n🪪AppleID: {email_field} \n🛍️ You selected a {selected_product} with {subscription} subscription.\n\n🎫Code: {link_item['code']}  \n🔗 Link: \n {link_item['link']} \n\n📅Expiration: {expiration.date()}   \n\n 🙏 Thank you for using our bot",
+                    reply_markup=markupp)
+            else:
+                bttn = InlineKeyboardButton("Contact support", callback_data='support')
+                markupp = InlineKeyboardMarkup([[bttn]])
+                await update.message.reply_text("Not active link found for AppleMusic.", reply_markup=markupp)
 
-        else:
-            await update.message.reply_text(
-                f"🗂️ Order Code: {order_code} \n👤 User: {user} \n🛍️ You selected a {selected_product} with {subs} subscription.\n\n 🙏 Thank you for using our bot")
-            expiration = add_months(datetime.now(), int(subs[0]))
-            with open('orders.json') as f:
-                data = json.load(f)
-                orderrr = {"order_code": order_code, "user": user, "chat_id": update.message.chat.id,"message_id": update.message.id + 1, "expiration": str(expiration.date())}
-                data.append(orderrr)
-            with open('orders.json', 'w') as file:
-                json.dump(data, file)
 
     else:
         answer = update.message.text
@@ -159,75 +154,46 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
         email_field = answer
         user = update.message.chat.username
 
-        print(answer)
+        #print(answer)
         # print(update.message.chat)
         # print(context.user_data)
 
         if context.user_data['product'] == "AppleMusic":
-            service_link = \
-                link['{}'.format(context.user_data["product"])]['{}'.format(context.user_data["subscription"])][
-                    "link"]
-            service_code = \
-                link['{}'.format(context.user_data["product"])]['{}'.format(context.user_data["subscription"])][
-                    "code"]
-            expiration = add_months(datetime.now(), int(context.user_data['subscription'][0]))
-            # await reminderrr(update, context)
-            bttn = InlineKeyboardButton("Contact support", callback_data='support')
-            markupp = InlineKeyboardMarkup([[bttn]])
-            await update.message.reply_text(
-                f"🗂️ Order Code: {order_code} \n\n👤 User: {user} \n🪪AppleID: {email_field} \n🛍️ You selected a {selected_product} with {subscription} subscription.\n\n🎫Code: {service_code}  \n🔗 Link: \n {service_link} \n\n📅Expiration: {expiration.date()}   \n\n 🙏 Thank you for using our bot",
-                reply_markup=markupp)
 
-            with open('orders.json') as f:
-                data = json.load(f)
-                orderrr = {"order_code": order_code, "user": user, "chat_id": update.message.chat.id,
-                           "message_id": update.message.id + 1, "expiration": str(expiration.date())}
-                data.append(orderrr)
-            with open('orders.json', 'w') as file:
-                json.dump(data, file)
+            links_response = requests.get(f"http://23.88.54.241:8000/link-search?duration={subscription}&is_active=true&type={selected_product}")
+            links_data = links_response.json()
+            if links_data:
+                link_item = links_data[-1]
+                expiration = add_months(datetime.now(), int(subscription[0]))
+                bttn = InlineKeyboardButton("Contact support", callback_data='support')
+                markupp = InlineKeyboardMarkup([[bttn]])
+                await update.message.reply_text(f"🗂️ Order Code: {order_code} \n\n👤 User: {user} \n🪪AppleID: {email_field} \n🛍️ You selected a {selected_product} with {subscription} subscription.\n\n🎫Code: {link_item['code']}  \n🔗 Link: \n {link_item['link']} \n\n📅Expiration: {expiration.date()}   \n\n 🙏 Thank you for using our bot",reply_markup=markupp)
+            else:
+                bttn = InlineKeyboardButton("Contact support", callback_data='support')
+                markupp = InlineKeyboardMarkup([[bttn]])
+                await update.message.reply_text("Not active link found for AppleMusic.", reply_markup=markupp)
 
 
         elif context.user_data['product'] == "Spotify":
             await update.message.reply_text(
                 f"🗂️ Order Code: {order_code} \n\n👤 User: {user} \n🛍️ You selected a {selected_product} with {subscription} subscription.\n\nIt will be sent to you after the desired service is ready.   \n\n 🙏 Thank you for using our bot")
-            expiration = add_months(datetime.now(), int(context.user_data['subscription'][0]))
-            with open('orders.json') as f:
-                data = json.load(f)
-                orderrr = {"order_code": order_code, "user": user, "chat_id": update.message.chat.id,
-                           "message_id": update.message.id + 1, "expiration": str(expiration.date())}
-                data.append(orderrr)
-            with open('orders.json', 'w') as file:
-                json.dump(data, file)
+
 
         elif context.user_data['product'] == "AppleOne":
-            service_link = \
-                link['{}'.format(context.user_data["product"])]['{}'.format(context.user_data["subscription"])][
-                    "link"]
-            service_code = \
-                link['{}'.format(context.user_data["product"])]['{}'.format(context.user_data["subscription"])][
-                    "code"]
-            expiration = add_months(datetime.now(), int(context.user_data['subscription'][0]))
-            await update.message.reply_text(
-                f"🗂️ Order Code: {order_code} \n\n👤 User: {user} \n🪪AppleID: {email_field} \n🛍️ You selected a {selected_product} with {subscription} subscription.\n\n🎫Code: {service_code}  \n🔗 Link: \n {service_link} \n\n📅Expiration: {expiration.date()}     \n\n 🙏 Thank you for using our bot")
-            with open('orders.json') as f:
-                data = json.load(f)
-                orderrr = {"order_code": order_code, "user": user, "chat_id": update.message.chat.id,
-                           "message_id": update.message.id + 1, "expiration": str(expiration.date())}
-                data.append(orderrr)
-            with open('orders.json', 'w') as file:
-                json.dump(data, file)
-
-        else:
-            await update.message.reply_text(
-                f"🗂️ Order Code: {order_code} \n👤 User: {user} \n🛍️ You selected a {selected_product} with {subscription} subscription.\n\n 🙏 Thank you for using our bot")
-            expiration = add_months(datetime.now(), int(context.user_data['subscription'][0]))
-            with open('orders.json') as f:
-                data = json.load(f)
-                orderrr = {"order_code": order_code, "user": user, "chat_id": update.message.chat.id,
-                           "message_id": update.message.id + 1, "expiration": str(expiration.date())}
-                data.append(orderrr)
-            with open('orders.json', 'w') as file:
-                json.dump(data, file)
+            links_response = requests.get(f"http://23.88.54.241:8000/link-search?duration={subscription}&is_active=true&type={selected_product}")
+            links_data = links_response.json()
+            if links_data:
+                link_item = links_data[-1]
+                expiration = add_months(datetime.now(), int(subscription[0]))
+                bttn = InlineKeyboardButton("Contact support", callback_data='support')
+                markupp = InlineKeyboardMarkup([[bttn]])
+                await update.message.reply_text(
+                    f"🗂️ Order Code: {order_code} \n\n👤 User: {user} \n🪪AppleID: {email_field} \n🛍️ You selected a {selected_product} with {subscription} subscription.\n\n🎫Code: {link_item['code']}  \n🔗 Link: \n {link_item['link']} \n\n📅Expiration: {expiration.date()}   \n\n 🙏 Thank you for using our bot",
+                    reply_markup=markupp)
+            else:
+                bttn = InlineKeyboardButton("Contact support", callback_data='support')
+                markupp = InlineKeyboardMarkup([[bttn]])
+                await update.message.reply_text("Not active link found for AppleOne.", reply_markup=markupp)
 
 
 
@@ -274,9 +240,6 @@ async def choose_subscription(update: Update, context: ContextTypes.DEFAULT_TYPE
 
 
 
-
-
-# Main function to start the bot
 def main() -> None:
     application = Application.builder().token(TOKEN).build()
     # Define conversation handler with states
