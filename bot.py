@@ -112,6 +112,24 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
                 link_item = links_data[-1]
                 expiration = add_months(datetime.now(), int(subs[0]))
                 requests.get(f"http://23.88.54.241:8000/link-add-usage/{link_item['id']}")
+
+                print('-----1-')
+                print(update.message.chat_id)
+                print('---')
+                print(update.message.message_id)
+
+                post_data = {
+                    'order_code': order_code,
+                    'link': link_item['id'],
+                    'user': user,
+                    'chat_id': update.message.chat_id,
+                    'message_id': update.message.message_id,
+                    'expiration': expiration.date(),
+                    'input': answer
+                }
+                requests.post('http://23.88.54.241:8000/add-order/', data=post_data)
+
+
                 bttn = InlineKeyboardButton("Contact support", callback_data='support')
                 markupp = InlineKeyboardMarkup([[bttn]])
                 await update.message.reply_text(
