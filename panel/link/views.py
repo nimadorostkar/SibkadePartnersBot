@@ -43,7 +43,7 @@ class LinkItemAddUsageView(APIView):
     permission_classes = [AllowAny]
     def get(self, *args, **kwargs):
         try:
-            link = Link.objects.get(code=self.kwargs["code"])
+            link = Link.objects.get(id=self.kwargs["id"])
             link.used_times += 1
             if link.used_times >= link.usable_times:
                 link.is_active = False

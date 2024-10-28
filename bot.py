@@ -111,6 +111,7 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
             if links_data:
                 link_item = links_data[-1]
                 expiration = add_months(datetime.now(), int(subs[0]))
+                requests.get(f"http://23.88.54.241:8000/link-add-usage/{link_item['id']}")
                 bttn = InlineKeyboardButton("Contact support", callback_data='support')
                 markupp = InlineKeyboardMarkup([[bttn]])
                 await update.message.reply_text(
@@ -135,6 +136,7 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
             if links_data:
                 link_item = links_data[-1]
                 expiration = add_months(datetime.now(), int(subs[0]))
+                requests.get(f"http://23.88.54.241:8000/link-add-usage/{link_item['id']}")
                 bttn = InlineKeyboardButton("Contact support", callback_data='support')
                 markupp = InlineKeyboardMarkup([[bttn]])
                 await update.message.reply_text(
@@ -165,10 +167,10 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
             if links_data:
                 link_item = links_data[-1]
                 expiration = add_months(datetime.now(), int(subscription[0]))
+                requests.get(f"http://23.88.54.241:8000/link-add-usage/{link_item['id']}")
                 bttn = InlineKeyboardButton("Contact support", callback_data='support')
                 markupp = InlineKeyboardMarkup([[bttn]])
                 await update.message.reply_text(f"🗂️ Order Code: {order_code} \n\n👤 User: {user} \n🪪AppleID: {email_field} \n🛍️ You selected a {selected_product} with {subscription} subscription.\n\n🎫Code: {link_item['code']}  \n🔗 Link: \n {link_item['link']} \n\n📅Expiration: {expiration.date()}   \n\n 🙏 Thank you for using our bot",reply_markup=markupp)
-                # link_item['id']
             else:
                 bttn = InlineKeyboardButton("Contact support", callback_data='support')
                 markupp = InlineKeyboardMarkup([[bttn]])
@@ -186,6 +188,7 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
             if links_data:
                 link_item = links_data[-1]
                 expiration = add_months(datetime.now(), int(subscription[0]))
+                requests.get(f"http://23.88.54.241:8000/link-add-usage/{link_item['id']}")
                 bttn = InlineKeyboardButton("Contact support", callback_data='support')
                 markupp = InlineKeyboardMarkup([[bttn]])
                 await update.message.reply_text(

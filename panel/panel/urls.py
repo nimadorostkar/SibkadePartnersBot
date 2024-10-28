@@ -9,7 +9,7 @@ urlpatterns = [
     path("links", LinkView.as_view(), name="links"),
     path("link/<str:code>", LinkItemView.as_view(), name="link"),
     path("link-search", LinkSearchView.as_view(), name="link-search"),
-    path("link-add-usage/<str:code>", LinkItemAddUsageView.as_view(), name="link-add-usage"),
+    path("link-add-usage/<int:id>", LinkItemAddUsageView.as_view(), name="link-add-usage"),
 ]
 urlpatterns += static(MEDIA_URL, document_root=MEDIA_ROOT)
 urlpatterns += static(STATIC_URL, document_root=STATIC_ROOT)
