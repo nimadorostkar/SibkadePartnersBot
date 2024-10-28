@@ -106,7 +106,7 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
 
         if selected_product == "AppleMusic" or selected_product == "applemusic":
             links_response = requests.get(
-                f"http://23.88.54.241:8000/link-search?duration={subscription}&is_active=true&type={selected_product}")
+                f"http://23.88.54.241:8000/link-search?duration={subs}&is_active=true&type=AppleMusic")
             links_data = links_response.json()
             if links_data:
                 link_item = links_data[-1]
@@ -114,7 +114,7 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
                 bttn = InlineKeyboardButton("Contact support", callback_data='support')
                 markupp = InlineKeyboardMarkup([[bttn]])
                 await update.message.reply_text(
-                    f"🗂️ Order Code: {order_code} \n\n👤 User: {user} \n🪪AppleID: {email_field} \n🛍️ You selected a {selected_product} with {subscription} subscription.\n\n🎫Code: {link_item['code']}  \n🔗 Link: \n {link_item['link']} \n\n📅Expiration: {expiration.date()}   \n\n 🙏 Thank you for using our bot",
+                    f"🗂️ Order Code: {order_code} \n\n👤 User: {user} \n🪪AppleID: {email_field} \n🛍️ You selected a AppleMusic with {subs} subscription.\n\n🎫Code: {link_item['code']}  \n🔗 Link: \n {link_item['link']} \n\n📅Expiration: {expiration.date()}   \n\n 🙏 Thank you for using our bot",
                     reply_markup=markupp)
             else:
                 bttn = InlineKeyboardButton("Contact support", callback_data='support')
@@ -125,12 +125,12 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
 
         elif selected_product == "Spotify" or selected_product == "spotify":
             await update.message.reply_text(
-                f"🗂️ Order Code: {order_code} \n\n👤 User: {user} \n🛍️ You selected a {selected_product} with {subscription} subscription.\n\nIt will be sent to you after the desired service is ready.   \n\n 🙏 Thank you for using our bot")
+                f"🗂️ Order Code: {order_code} \n\n👤 User: {user} \n🛍️ You selected a Spotify with {subs} subscription.\n\nIt will be sent to you after the desired service is ready.   \n\n 🙏 Thank you for using our bot")
 
 
         elif selected_product == "AppleOne" or selected_product == "appleone":
             links_response = requests.get(
-                f"http://23.88.54.241:8000/link-search?duration={subscription}&is_active=true&type={selected_product}")
+                f"http://23.88.54.241:8000/link-search?duration={subs}&is_active=true&type=AppleOne")
             links_data = links_response.json()
             if links_data:
                 link_item = links_data[-1]
@@ -138,7 +138,7 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
                 bttn = InlineKeyboardButton("Contact support", callback_data='support')
                 markupp = InlineKeyboardMarkup([[bttn]])
                 await update.message.reply_text(
-                    f"🗂️ Order Code: {order_code} \n\n👤 User: {user} \n🪪AppleID: {email_field} \n🛍️ You selected a {selected_product} with {subscription} subscription.\n\n🎫Code: {link_item['code']}  \n🔗 Link: \n {link_item['link']} \n\n📅Expiration: {expiration.date()}   \n\n 🙏 Thank you for using our bot",
+                    f"🗂️ Order Code: {order_code} \n\n👤 User: {user} \n🪪AppleID: {email_field} \n🛍️ You selected a AppleOne with {subs} subscription.\n\n🎫Code: {link_item['code']}  \n🔗 Link: \n {link_item['link']} \n\n📅Expiration: {expiration.date()}   \n\n 🙏 Thank you for using our bot",
                     reply_markup=markupp)
             else:
                 bttn = InlineKeyboardButton("Contact support", callback_data='support')
