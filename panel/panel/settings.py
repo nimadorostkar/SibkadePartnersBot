@@ -23,7 +23,6 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'allauth',
     'allauth.account',
-    'allauth.socialaccount',
     'link',
     'order',
     'django.contrib.admin',
@@ -37,8 +36,20 @@ INSTALLED_APPS = [
     'corsheaders',
     'gunicorn',
     'whitenoise',
-    'django_q',
 ]
+
+
+
+
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'UTC'
+
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -122,16 +133,13 @@ AUTHENTICATION_BACKENDS = [
 SITE_ID = 1
 
 
-Q_CLUSTER = {
-    'name': 'DjangoQ',
-    'workers': 4,
-    'recycle': 500,
-    'timeout': 60,
-    'retry': 60,
-    'queue_limit': 50,
-    'bulk': 10,
-    'orm': 'default'
-}
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = "smtp.c1.liara.email"
+EMAIL_PORT = 587
+EMAIL_HOST_USER = "happy_rosalind_po1nl8"
+EMAIL_HOST_PASSWORD = "8933acf5-9f14-423e-b179-84852ec9f865"
+EMAIL_USE_TLS = True  # Use TLS encryption
+EMAIL_FROM_ADDRESS = "contact@helpfinity.app"
 
 
 # Internationalization
